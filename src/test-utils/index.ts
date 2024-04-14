@@ -11,13 +11,13 @@ export const authAgent = async (app: Application): Promise<SuperAgentTest> => {
   const agent = supertest(app);
 
   await agent
-    .post('/auth/login')
+    .post('/auth/sign-in')
     .send(testUser)
     .set('Content-Type', 'application/json')
     .then(response => {
-      const cookies = response.header['set-cookie'];
-      if (!cookies) throw new Error('No cookies');
-      agent.set('Cookie', cookies[0]);
+      const token = response.body.token;
+      if (!token) throw new Error('Token not found');
+      agent.set('Authorization', `Bearer ${token}`);
     });
 
   return agent;

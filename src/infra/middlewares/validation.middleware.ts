@@ -1,23 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { AnyZodObject, ZodError, ZodIssue } from 'zod';
+import { AnyZodObject, ZodError } from 'zod';
 
 interface RequestValidators {
   body?: AnyZodObject;
   query?: AnyZodObject;
   params?: AnyZodObject;
 }
-
-const parseErrors = (errors: ZodIssue[]) => {
-  if (errors.length === 0) {
-    return {};
-  }
-
-  return errors.reduce((acc, error) => {
-    const field = error.path.join('.');
-    acc[field] = error.message;
-    return acc;
-  }, {});
-};
 
 export const validationMiddleware = (validators: RequestValidators) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -37,8 +25,7 @@ export const validationMiddleware = (validators: RequestValidators) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errors = parseErrors(error.errors);
-        return res.status(400).json({ errors });
+        return res.status(400).json({ errors: error.errors });
       }
 
       next(error);

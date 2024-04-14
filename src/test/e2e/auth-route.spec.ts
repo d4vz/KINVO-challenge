@@ -1,24 +1,24 @@
 import { App } from '@/app';
 import { SignUpDto } from '@/application/dtos/auth.dto';
 import { AuthRoute } from '@/application/routes/auth-route';
-import mongoose, { connection } from 'mongoose';
+import { MongoUsersRepository } from '@/infra/repositories/users/mongo-users-repository';
 import supertest, { SuperAgentTest } from 'supertest';
 
 describe('Auth Route', () => {
   let app: App;
   let agent: SuperAgentTest;
   let createdUserId: string;
+  let usersRepository: MongoUsersRepository;
 
   beforeAll(async () => {
     app = new App([new AuthRoute()]);
     agent = supertest.agent(app.app);
+    usersRepository = new MongoUsersRepository();
   });
 
   afterAll(async () => {
-    await connection.collections.users.deleteMany({
-      _id: createdUserId,
-    });
-    await mongoose.disconnect();
+    const deleted = await usersRepository.delete(createdUserId);
+    expect(deleted).toBeTruthy();
   });
 
   const user: SignUpDto = {

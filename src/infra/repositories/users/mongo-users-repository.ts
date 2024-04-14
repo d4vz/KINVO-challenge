@@ -2,6 +2,7 @@ import { CreateUserDto, UpdateUserDto } from '@/application/dtos/users.dto';
 import { User } from '@/domain/entities/user.entity';
 import { UsersRepository } from '@/domain/repositories/users.repository';
 import { UserModel } from '@/infra/models/users.model';
+import { isValidObjectId } from 'mongoose';
 import { Service } from 'typedi';
 
 @Service()
@@ -12,6 +13,8 @@ export class MongoUsersRepository implements UsersRepository {
   }
 
   public async findOne(id: string): Promise<User | null> {
+    const isValidId = isValidObjectId(id);
+    if (!isValidId) return null;
     const user = await UserModel.findById(id);
     if (!user) return null;
     return new User(user.toObject());
@@ -24,12 +27,16 @@ export class MongoUsersRepository implements UsersRepository {
   }
 
   public async update(id: string, userData: UpdateUserDto): Promise<User | null> {
+    const isValidId = isValidObjectId(id);
+    if (!isValidId) return null;
     const user = await UserModel.findByIdAndUpdate(id, userData, { new: true });
     if (!user) return null;
     return new User(user.toObject());
   }
 
   public async delete(id: string): Promise<boolean> {
+    const isValidId = isValidObjectId(id);
+    if (!isValidId) return false;
     const user = await UserModel.findByIdAndDelete(id);
     return !!user;
   }

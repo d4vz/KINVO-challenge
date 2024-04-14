@@ -3,10 +3,10 @@ import { UserRequest } from '@/application/interfaces/user-request.interface';
 import { HttpException } from '@/infra/exceptions/httpException';
 
 import { config } from '@/infra/config';
-import { UserModel } from '@/infra/models/users.model';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import _ from 'lodash';
+import { MongoUsersRepository } from '../repositories/users/mongo-users-repository';
 
 const getAuthorization = req => {
   const coockie = req.cookies['Authorization'];
@@ -28,7 +28,8 @@ export const authMiddleware = async (req: UserRequest, res: Response, next: Next
     }
 
     const payload = verify(authorization, config.SECRET_KEY) as JwtPayload;
-    const currentUser = await UserModel.findById(payload._id);
+    const usersRepository = new MongoUsersRepository();
+    const currentUser = await usersRepository.findOne(payload._id);
 
     if (!currentUser) {
       next(new HttpException(401, 'Wrong authentication token'));

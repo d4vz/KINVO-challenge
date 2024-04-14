@@ -6,9 +6,10 @@ import { signInSchema, signUpSchema } from '../dtos/auth.dto';
 import { Routes } from '../interfaces/routes.interface';
 
 export class AuthRoute implements Routes {
+  private controller = Container.get(AuthController);
+
   router = Router();
   path = '/auth';
-  private controller = Container.get(AuthController);
 
   constructor() {
     this.initializeRoutes();
