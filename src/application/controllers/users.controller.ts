@@ -1,4 +1,4 @@
-import { MongoUsersRepository } from '@/infra/repositories/users/mongo-users-repository';
+import { MongoUsersRepository } from '@/infra/repositories/mongo/mongo-users-repository';
 import { asyncHandler } from '@/utils/async-handler';
 import { CreateUserUseCase } from '../usecases/users/create-user-usecase';
 import { DeleteUserByIdUseCase } from '../usecases/users/delete-user-by-id.usecase';

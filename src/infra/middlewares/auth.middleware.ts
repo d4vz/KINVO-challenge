@@ -6,7 +6,7 @@ import { config } from '@/infra/config';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import _ from 'lodash';
-import { MongoUsersRepository } from '../repositories/users/mongo-users-repository';
+import { MongoUsersRepository } from '../repositories/mongo/mongo-users-repository';
 
 const getAuthorization = req => {
   const coockie = req.cookies['Authorization'];

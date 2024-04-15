@@ -19,7 +19,7 @@ export const dbConnection = async () => {
     },
   };
 
-  if (NODE_ENV !== 'production') {
+  if (!['test', 'production'].includes(NODE_ENV)) {
     set('debug', true);
   }
 

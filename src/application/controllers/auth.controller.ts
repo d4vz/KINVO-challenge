@@ -1,4 +1,4 @@
-import { MongoUsersRepository } from '@/infra/repositories/users/mongo-users-repository';
+import { MongoUsersRepository } from '@/infra/repositories/mongo/mongo-users-repository';
 import { asyncHandler } from '@/utils/async-handler';
 import { Service } from 'typedi';
 import { SignInUseCase } from '../usecases/auth/sign-in.usecase';

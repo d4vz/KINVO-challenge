@@ -1,7 +1,7 @@
 import { App } from '@/app';
 import { SignUpDto } from '@/application/dtos/auth.dto';
 import { AuthRoute } from '@/application/routes/auth-route';
-import { MongoUsersRepository } from '@/infra/repositories/users/mongo-users-repository';
+import { MongoUsersRepository } from '@/infra/repositories/mongo/mongo-users-repository';
 import supertest, { SuperAgentTest } from 'supertest';
 
 describe('Auth Route', () => {
